@@ -1,20 +1,17 @@
 import 'package:dio/dio.dart';
 
 class Network {
-  Future<String> getData() async {
-    var data = "";
+  Future<dynamic> getData(path) async {
+    var data;
     var dio = Dio(); // with default Options
     dio.options.baseUrl = 'https://jsonplaceholder.typicode.com/';
-    try {
-      final response = await dio.get("posts/1/comments");
+    dio.options.responseType = ResponseType.plain;
+      final response = await dio.get(path);
       if (response.statusCode == 200) {
-        data = response.data.toString();
+        data = response.data;
       } else {
-        data = "fail";
+        throw Exception("Data incorrect");
       }
-    } on DioError catch (e) {
-      data = "No network: " + e.toString();
-    }
     return data;
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http_request_practice/model/user.dart';
 import 'package:http_request_practice/service/network.dart';
 
 class MyApp extends StatefulWidget {
@@ -12,6 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var content = "";
   var isProgress = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +32,15 @@ class _MyAppState extends State<MyApp> {
                 ElevatedButton(
                     onPressed: () async {
                       showProgress();
-                      final data = await Network().getData();
+                      var data;
+                      try {
+                        data = await Network().getData("posts/1");
+                        final jsonObj = jsonDecode(data);
+                        final user = User.fromJson(jsonObj);
+                        print(user);
+                      } on DioError catch (e) {
+                        data = "No network: " + e.message;
+                      }
                       stopProgress(data);
                     },
                     child: const Text("Get")),
@@ -48,7 +60,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
   void stopProgress(String data) {
     setState(() {
       isProgress = false;
@@ -62,5 +73,4 @@ class _MyAppState extends State<MyApp> {
       content = "";
     });
   }
-
 }
