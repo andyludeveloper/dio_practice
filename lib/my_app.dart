@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
                       showProgress();
                       var data;
                       try {
-                        data = await Network().getData("posts/1");
+                        data = await Network().get("posts/1");
                         final jsonObj = jsonDecode(data);
                         final user = User.fromJson(jsonObj);
                         print(user);

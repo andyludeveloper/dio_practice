@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class Network {
-  Future<dynamic> getData(path) async {
+  Future<dynamic> get(path) async {
     var data;
     var dio = Dio(); // with default Options
     dio.options.baseUrl = 'https://jsonplaceholder.typicode.com/';
